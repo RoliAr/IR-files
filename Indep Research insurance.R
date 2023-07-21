@@ -11,8 +11,8 @@ library(rpart.plot)
 # Start the timer
 start_time <- Sys.time()
 
-data <- read.csv("C:/Users/ROEYE/Downloads/insurance.csv")
-
+#data <- read.csv("C:/Users/ROEYE/Downloads/insurance.csv")
+data <- read.csv ("https://raw.githubusercontent.com/RoliAr/IR-files/main/insurance.csv")
 # Convert categorical variables to factor
 data$sex <- as.factor(data$sex)
 data$smoker <- as.factor(data$smoker)
@@ -99,6 +99,7 @@ start_time_tree <- Sys.time()
 model_tree <- rpart(charges ~ ., data = training, method = "anova")
 printcp(model_tree)
 summary(model_tree)
+feature_importance <- importance(model_tree)
 
 # Predict
 predictions_tree <- predict(model_tree, test)
@@ -124,6 +125,7 @@ ggplot(data.frame(Actual = test$charges, Predicted = predictions_tree), aes(x = 
   ggtitle("Actual vs Predicted charges (Decision Tree)") +
   xlab("Actual charges") +
   ylab("Predicted charges")
+
 
 # Calculate residuals
 residuals_tree <- test$charges - predictions_tree
@@ -160,6 +162,8 @@ model_rf <- randomForest(charges ~ ., data = training, ntree=500)
 
 # Print model summary
 print(summary(model_rf))
+
+
 
 # Predict
 predictions_rf = predict(model_rf, test)
@@ -256,4 +260,4 @@ end_time_nn <- Sys.time()
 
 # Print the time taken
 print(end_time_nn - start_time_nn)
-
+##########################################################################################################
